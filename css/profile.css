@@ -1,0 +1,32 @@
+.profile{
+  display: inline-block;
+  margin-top: 50px;
+  width: 100%;
+}
+
+.profile img{
+  height: 200px;
+  width: 200px;
+}
+
+.image{
+  float: left;
+}
+
+.user-contact{
+  margin-left: 20px;
+  float: left;
+}
+
+.profile h2, h3, a{
+  margin: 0;
+  padding: 8px 5px 5px 5px;
+}
+
+.profile a{
+  font-size: 20px;
+}
+
+.profile h2 span{
+  font-size: 23px;
+}

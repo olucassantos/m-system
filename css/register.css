@@ -1,0 +1,51 @@
+body {
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #eee;
+}
+
+.form-signup {
+  max-width: 900px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.fields{
+  max-width: 600px;
+  padding: 15px;
+  margin: 0 auto;
+}
+
+.form-signup-heading, {
+  margin-bottom: 10px;
+}
+
+.form-signup .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+
+.form-signup input[name="name"], input[name="login"], input[name="rg"], input[name="course"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signup input[name="age"], input[name="account"], input[type="password"], input[name="time"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-signup input[name="phone"], input[name="cpf"], input[type="email"], input[name="ra"], input[name="address"] {
+  margin-bottom: -1px;
+  border-radius: 0;
+}
+
+.form-signup input[name="monitor"]{
+  margin-bottom: 10px;
+}
