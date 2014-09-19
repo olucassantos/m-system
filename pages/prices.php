@@ -21,27 +21,26 @@
         <div class="col-md-12">
           <div class="table">
             <div class="page-header">
-              <h3>Cursos</h3>
+              <h3>Valores</h3>
             </div>
             <table class="table table-bordered">
               <thead>
                 <tr>
-                  <th>Curso</th>
-                  <th>Monitor</th>
+                  <th>Mês</th>
+                  <th>Valor</th>
                   <th>Opções</th>
                 </tr>
               </thead>
               <tbody>
                 <?php
-                  $rows = all_courses_select();
-
+                  $rows = all_prices_select();
                   if ($rows != ''){
                     foreach ($rows as $row) {
-                      $user = user_by_id($row['user_id']);
+                      $month = date_format(date_create($row['month']), 'm');
                       echo "
                         <tr>
-                          <td>". $row['name'] ."</td>
-                          <td>". $user['name'] ."</td>
+                          <td>". return_month_name($month) ."</td>
+                          <td> R$ ". $row['value'] ."</td>
                           <td class='buttons'>
                             <div class='btn-group btn-group-justified'>
                               <div class='btn-group'>
@@ -56,7 +55,7 @@
                       ";
                     }
                 }else{
-                    echo "<div class='page-header'><h4>Nenhum curso encontrado.</h4></div>";
+                    echo "<div class='page-header'><h4>Nenhum valor encontrado.</h4></div>";
                 }
                 ?>
               </tbody>
@@ -64,7 +63,7 @@
           </div>
           <div class="register button">
             <div class="btn-group">
-              <a class="btn btn-xl btn-info" href="register-course.php">Cadastrar Curso</a>
+              <a class="btn btn-xl btn-info" href="register-course.php">Cadastrar Valor</a>
             </div> 
           </div>
         </div>

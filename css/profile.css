@@ -1,6 +1,6 @@
 .profile{
   display: inline-block;
-  margin-top: 50px;
+  margin-top: 20px;
   width: 100%;
 }
 
@@ -29,4 +29,20 @@
 
 .profile h2 span{
   font-size: 23px;
+}
+
+.form-schedule, .form-course{
+  margin-bottom: 30px;
+}
+
+.edit-schedule{
+  margin-top: 30px;
+}
+
+.course{
+  margin: 10px 0 10px;
+}
+
+.page-header{
+  margin: 30px 0 20px;
 }

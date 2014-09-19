@@ -23,17 +23,24 @@
   </head>
   <body>
     <div class="container">
-      <form action="codes/login.php" class="form-signin" method="POST" role="form">
-        <h2 class="form-signin-heading">Entrar no sistema</h2>
-        <input class="form-control" type="text" name="login" placeholder="Endereço de email">
-        <input class="form-control" type="password" name="password" placeholder="Senha">
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Lembrar usuário
-          </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
-      </form>
+      <div class="banner">
+        <h1>M-System</h1>
+      </div>
+      <div class="panel">
+        <form action="codes/login.php" class="form-signin" method="POST" role="form">
+          <div class="image-profile">
+            <img src="../images/eu.jpg" class="img-circle">
+          </div>
+          <input class="form-control" type="text" name="login" placeholder="Login">
+          <input class="form-control" type="password" name="password" placeholder="Senha">
+          <button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" value="remember-me"> Lembrar usuário
+            </label>
+          </div>
+        </form>
+      </div>
     </div>
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->

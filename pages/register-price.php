@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Sistema de Monitoria</title>
+    <title>Registar preço por hora</title>
 
     <!-- Bootstrap -->
     <link href="../css/index.css" rel="stylesheet">
@@ -23,19 +23,25 @@
   <body>
    <?php include('../templates/nav.php'); ?>
     <div class="container">
-      <form action="../codes/register-course.php" method="POST" class="form-signup" role="form">
-        <h2 class="form-signin-heading">Cadastrar novo curso</h2>
+      <form action="../codes/register-price.php" method="POST" class="form-signup" role="form">
+        <h2 class="form-signin-heading">Cadastrar preço por hora.</h2>
 
-        <input class="form-control" type="text" name="course" placeholder="Matéria">
+        <input class="form-control" type="text" name="price" placeholder="Valor">
 
-        <?php
-          echo '<select class="form-control" name="monitor">';
-            foreach (all_users_select() as $row) {
-              echo $row['id'];
-              echo "<option value=" . $row['id'] . ">". $row['name'] ."</option>";
-            }
-          echo "</select>";
-        ?>
+        <select class="form-control" name="month">
+          <option value='2000-01-01'>Janeiro</option>
+          <option value='2000-02-01'>Fevereiro</option>
+          <option value='2000-03-01'>Março</option>
+          <option value='2000-04-01'>Abril</option>
+          <option value='2000-05-01'>Maio</option>
+          <option value='2000-06-01'>Junho</option>
+          <option value='2000-07-01'>Julho</option>
+          <option value='2000-08-01'>Agosto</option>
+          <option value='2000-09-01'>Setembro</option>
+          <option value='2000-10-01'>Outubro</option>
+          <option value='2000-11-01'>Novembro</option>
+          <option value='2000-12-01'>Dezembro</option>
+        </select>
 
         <br>
         <div class="btn-group btn-group-justified">

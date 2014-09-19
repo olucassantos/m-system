@@ -15,22 +15,13 @@
   $login = $_POST['login'];
   $password = $_POST['password'];
   
-  if($name == "" || $address == "" || $phone == "" || $age == "" || $rg == "" || $ra == "" || $cpf == "" || $account == "")
+  if($name == "" || $address == "" || $phone == "" || $age == "" || $rg == "" || $ra == "" || $cpf == "" || $account == "" || $login == "" || $password == "")
   {
-    $error = "error";
     header('Location: ../pages/monitors.php');
   }
   else{
-    $error = "";
     insert('user', array('name', 'address', 'phone', 'cpf', 'rg', 'ra', 'account', 'age', 'email'), array($name, $address, $phone, $cpf, $rg, $ra, $account, $age, $email));
-  }
-
-  if($login == "" || $password == "")
-  {
-    header('Location: ../pages/monitors.php');
-  }else{
-    $error = "";
-    insert('login', array('login', 'password', 'user_id'), array($login, $password, userid_by_name($name)));
+    insert('login', array('login', 'password', 'user_id'), array($login, $password, userid_by_rg($rg)));
   }
 
   insert('schedule', array('user_id'), array(userid_by_name($name)));

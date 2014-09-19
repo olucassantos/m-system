@@ -1,0 +1,25 @@
+.form-register select[name="course"], select[name="lesson"]{
+	width: 85%;
+	float: left;
+	height: 35px;
+}
+
+.form-register button{
+	margin-left: 10px;
+}
+
+.panel{
+	padding: 15px;
+}
+
+.panel .start{
+  background-color: #E0FFFF;
+}
+
+.panel .end{
+  background-color: #FAF0E6;
+}
+
+.panel .page-header{
+	margin-top: 5px;
+}

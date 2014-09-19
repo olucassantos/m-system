@@ -7,22 +7,17 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/m-system">Monitor System</a>
+      <a class="navbar-brand" href="/">Monitor System</a>
     </div>
     <div class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li><a href="/m-system">Início</a></li>
+        <li><a href="/">Início</a></li>
         <li><a href="monitors.php">Monitores</a></li>
         <li><a href="courses.php">Cursos</a></li>
-        <li><a href="#">Horarios</a></li>
-        <li><a href="#">Historico de Monitoria</a></li>
-      </ul>
-      <ul class="nav navbar-nav navbar-right">
-        <div class="login-image">
-          <a href="profile.php">
-            <img src="../images/eu.jpg" alt="">
-          </a>
-        </div>
+        <li><a href="schedule.php">Horarios</a></li>
+        <li><a href="history.php">Historico de Monitoria</a></li>
+        <li><a href="prices.php">Preços</a></li>
+        <li><a href="profile.php">Perfil</a></li>
         <li><a href="../codes/logout.php">Sair</a></li>   
       </ul>
     </div><!--/.nav-collapse -->

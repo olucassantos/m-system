@@ -1,12 +1,14 @@
 <?php
   function connect()
   {
-    return mysqli_connect("localhost","root", "", "m-system"); //abrir conexao
+    return mysqli_connect("localhost","root", "", "m-system");
+    // return mysqli_connect("mysql.hostinger.com.br","u602974892_syste", "m-system", "u602974892_syste");
   }
+
+  $mysqli = connect();
 
   function insert($table, $col, $value)
   {
-
     $mysqli = connect();
     $cols = "";
     for ($i=0; $i < (sizeof($col) - 1) ; $i++)
@@ -32,28 +34,32 @@
     }
   }
 
-  function user_by_id($id)
+  function update($table, $col, $value, $clause)
   {
     $mysqli = connect();
-    $result = $mysqli->query('SELECT * FROM user WHERE id ='. $id);
 
-    while($row = $result->fetch_array())
+    $data = "";
+    for ($i=0; $i < (sizeof($col) - 1) ; $i++)
     {
-      $rows[] = $row;
+        $data .= "$col[$i]='$value[$i]', " ;
     }
+    $data .= "$col[$i]='$value[$i]'";
+    $code =  "UPDATE $table SET  $data $clause";
 
-    if (isset($rows)){
-      $res = $rows[0];
-      return ($res != "") ? $res : '0';
+    
+    
+    $insert_row = $mysqli->query($code);
+    if($insert_row){
+      return true;
     }else{
-      return 0;
+        die('Error : ('. $mysqli->errno .') '. $mysqli->error);
     }
   }
 
-  function userid_by_name($name)
+  function first_of_row($query)
   {
     $mysqli = connect();
-    $result = $mysqli->query("SELECT id FROM user WHERE name ='". $name ."'");
+    $result = $mysqli->query($query);
 
     while($row = $result->fetch_array())
     {
@@ -61,117 +67,163 @@
     }
 
     if (isset($rows)){
-      $res = $rows[0]['id'];
-      return ($res != "") ? $res : '0';
+      return $rows[0];
     }else{
-      return 0;
+      return array();
     }
+  }
+
+  function value_of_first_row($query, $value)
+  {
+    $mysqli = connect();
+    $result = $mysqli->query($query);
+
+    while($row = $result->fetch_array())
+    {
+      $rows[] = $row;
+    }
+
+    if (isset($rows)){
+      return $rows[0][$value];
+    }else{
+      return '';
+    }
+  }
+
+  function all_rows($table, $clause='')
+  {
+    $mysqli = connect();
+    $result = $mysqli->query("SELECT * FROM $table $clause");
+
+    while($row = $result->fetch_array())
+    {
+      $rows[] = $row;
+    }
+
+    return isset($rows) ? $rows : array();
+  }
+
+  function all_rows_especial($query)
+  {
+    $mysqli = connect();
+    $result = $mysqli->query($query);
+
+    while($row = $result->fetch_array())
+    {
+      $rows[] = $row;
+    }
+
+    return isset($rows) ? $rows : array();
+  }
+
+  function login_by_login($user, $password)
+  {
+    return first_of_row("SELECT * FROM login WHERE login='$user' AND password='$password' LIMIT 1");
+  }
+
+  function login_by_user($user_id)
+  {
+    return first_of_row("SELECT * FROM login WHERE user_id='$user_id'");
+  }
+
+  function user_by_id($id)
+  {
+    return first_of_row("SELECT * FROM user WHERE id='$id'");
+  }
+
+  function userid_by_rg($rg)
+  {
+    return value_of_first_row("SELECT id FROM user WHERE rg='$rg'", 'id');
   }
 
   function scheduleid_by_userid($id)
   {
-    $mysqli = connect();
-    $result = $mysqli->query("SELECT id FROM schedule WHERE user_id ='". $id ."'");
-
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row;
-    }
-
-    if (isset($rows)){
-      $res = $rows[0]['id'];
-      return ($res != "") ? $res : '0';
-    }else{
-      return 0;
-    }
+    return value_of_first_row("SELECT id FROM schedule WHERE user_id='$id'", 'id');
   }
 
-  function curse_by_user($id)
+  function courses_by_user($id)
   {
-    $mysqli = connect();
-    $result = $mysqli->query('SELECT name FROM course WHERE user_id ='. $id);
+    return all_rows('course', "WHERE user_id='$id'");
+  }
 
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row;
-    }
+  function user_by_course_id($id)
+  {
+    $user_id = userid_by_course($id);
+    return first_of_row("SELECT * FROM user WHERE id ='$user_id'");
+  }
 
-    if (isset($rows)){
-      $res = $rows[0]['name'];
-      return ($res != "") ? $res : '-----';
-    }else{
-      return 0;
-    }
+  function userid_by_course($id)
+  {
+    return value_of_first_row("SELECT user_id FROM course WHERE id='$id'", 'user_id');
+  }
+
+  function user_by_scheduleid($id)
+  {
+    return value_of_first_row("SELECT user_id FROM schedule WHERE id='$id'", 'user_id');
   }
 
   function all_courses_select()
   {
-    $mysqli = connect();
-    $result = $mysqli->query('SELECT * FROM course');
+    return all_rows('course');
+  }
 
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row;
-    }
-
-    return isset($rows) ? $rows : '';
+  function all_prices_select()
+  {
+    return all_rows('price');
   }
 
   function all_hours_by_scheduleid($id)
   {
-    $mysqli = connect();
-    $result = $mysqli->query('SELECT * FROM hour WHERE schedule_id="'. $id .'" ORDER BY id ASC ');
-
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row;
-    }
-
-    return isset($rows) ? $rows : '';
+    return all_rows('hour', "WHERE schedule_id='$id' ORDER BY id ASC");
   }
 
-  function all_users_select()
+  function all_users_select($clause = "")
   {
-    $mysqli = connect();
-    $result = $mysqli->query('SELECT id, name FROM user');
-
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row;
-    }
-
-    return isset($rows) ? $rows : '';
+    return all_rows('user', $clause);
   }
 
-  function all_userid_select()
+  function course_name_by_id($id)
   {
-    $mysqli = connect();
-    $result = $mysqli->query('SELECT id FROM user');
-
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row['id'];
-    }
-
-    return isset($rows) ? $rows : '';
+    return value_of_first_row("SELECT name FROM course WHERE id ='$id'", 'name');
   }
 
   function course_by_id($id)
   {
-    $mysqli = connect();
-    $result = $mysqli->query('SELECT name FROM course WHERE id ='. $id);
-
-    while($row = $result->fetch_array())
-    {
-      $rows[] = $row;
-    }
-
-    if (isset($rows)){
-      $res = $rows[0]['name'];
-      return ($res != "") ? $res : '-----';
-    }else{
-      return 0;
-    }
+    return first_of_row("SELECT * FROM course WHERE id='$id'");
   }
 
+  function active_lesson_by_courseid($id)
+  {
+    return value_of_first_row("SELECT id FROM lesson WHERE course_id ='$id' AND active=true", 'id');
+  }
+
+  function select_start_end_lesson($id)
+  {   
+      $query = "SELECT start, end FROM lesson WHERE id ='$id' AND active='false'";
+      return array(value_of_first_row($query, 'start'), value_of_first_row($query, 'end'));
+  }
+
+  function lessons_by_month_and_user($id, $month)
+  {
+    return all_rows('lesson', "WHERE MONTH(end)='$month' AND user_id='$id'");
+  }
+
+  function total_months_worked_by_user($id)
+  { 
+    return all_rows_especial("SELECT DISTINCT MONTH(end) FROM lesson where user_id='$id' ORDER BY MONTH(end) ASC");
+  }
+
+  function total_days_worked_by_monts_user($id, $month)
+  {
+    return all_rows_especial("SELECT DISTINCT DAY(end) FROM `lesson` WHERE user_id='$id' AND MONTH(end)='$month' ORDER BY DAY(end) ASC");
+  }
+
+  function day_of_schedule($day, $schedule_id)
+  {
+    return first_of_row("SELECT * FROM hour WHERE schedule_id='$schedule_id' AND week_day='$day'");
+  }
+
+  function value_of_active_price($month){
+    return value_of_first_row("SELECT * FROM price WHERE MONTH(month)='$month'", 'value');
+  }
 ?>

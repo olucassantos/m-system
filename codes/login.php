@@ -6,29 +6,19 @@
   $user = $_POST['login'];
   $password = $_POST['password'];
 
-  $mysqli = connect();
-
-  $result = $mysqli->query("SELECT * FROM login WHERE login='".$user."' AND password='".$password."' LIMIT 1");
-
-  while($row = $result->fetch_array())
-  {
-    $rows[] = $row;
-  }
-
-  $user_id = $rows[0]['user_id'];
-
+  $rows = login_by_login($user, $password);
 
   if (sizeof($rows) > 0)
   {
     $_SESSION['login'] = $user;
-    $_SESSION['user'] = $user_id;
+    $_SESSION['user'] = $rows['user_id'];
 
     header('Location: ../pages/home.php');
   }else{
     unset($_SESSION['login']);
     unset($_SESSION['user']);
 
-    header('Location: /m-system');
+    header('Location: /');
   }
 
     if ($password == '123123'){
@@ -41,6 +31,6 @@
       unset($_SESSION['login']);
       unset($_SESSION['user']);
 
-      header('Location: /m-system');
+      header('Location: /');
     }
 ?>

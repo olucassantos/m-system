@@ -6,8 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Relatorio: Cursos e Monitores</title>
     <link rel="stylesheet" href="../css/index.css"/>
-    <link href="../css/login.css" rel="stylesheet">
-
+    <script src="../css/bootstrap/js/bootstrap.min.js"></script>
+    <script src="../js/chart.js"></script>
+    <script src="../js/jquery.min.js"></script>
     <?php
       include '../codes/checker.php';
     ?>
@@ -26,7 +27,6 @@
                 <tr><!-- linha da tabela-->
                   <th>Monitor </th> 
                   <th>Curso </th>
-                  <th>Horario </th>
                   <th>Opções </th>
                 </tr>   
               </thead>
@@ -39,10 +39,9 @@
                       echo "
                         <tr>
                           <td>
-                            ". $row['name'] ."
+                            <a href='profile.php?id=".$row['id']."'> ". $row['name'] ."</a>
                           </td>
-                          <td> ". curse_by_user($row['id']) ."</td>
-                          <td> Example Time </td>
+                          <td> ". string_courses(courses_by_user($row['id'])) ."</td>
                           <td class='buttons'>
                             <div class='btn-group btn-group-justified'>
                               <div class='btn-group'>
@@ -72,10 +71,5 @@
         </div> 
       </div> 
     </div>
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../css/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>

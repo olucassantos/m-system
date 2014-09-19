@@ -30,7 +30,7 @@ body {
   font-size: 16px;
 }
 
-.form-signup input[name="name"], input[name="login"], input[name="rg"], input[name="course"] {
+.form-signup input[name="name"], input[name="login"], input[name="rg"], input[name="course"], input[name="price"] {
   margin-bottom: -1px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
@@ -41,7 +41,7 @@ body {
   border-top-right-radius: 0;
 }
 
-.form-signup input[name="phone"], input[name="cpf"], input[type="email"], input[name="ra"], input[name="address"] {
+.form-signup input[name="phone"], input[name="cpf"], input[type="email"], input[name="ra"], input[name="address"], select[name="month"], select[name="monitor"] {
   margin-bottom: -1px;
   border-radius: 0;
 }

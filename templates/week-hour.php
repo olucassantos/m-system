@@ -5,8 +5,7 @@
 <div class="week-hour">
 <div class="page-header">
 
-  <h3><?php $user = user_by_id($id); echo "Horário - ". $user['name']; ?></h3>
-  <?php echo "<a href='../editar/horario.php?id=". $id ."'>Editar</a>" ?>
+<?php $user = user_by_id($id); echo "<h3> Horário - ". $user['name'] ." <a href='../pages/edit-schedule.php?id=". $id ."' class='glyphicon glyphicon-pencil'></a> </h3>"; ?>
 </div> 
 <table class="table table-bordered">
   <thead>

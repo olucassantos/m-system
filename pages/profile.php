@@ -8,11 +8,15 @@
 
     <!-- Bootstrap -->
     <link href="../css/index.css" rel="stylesheet">
-    <link href="../css/historico.css" rel="stylesheet">
     <!--[if lt IE 9]>
       <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
       <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
     <![endif]-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="../css/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="../js/chart.js"></script>
+
 
     <script>
       $(function() {
@@ -35,15 +39,22 @@
         </div>
         <div class="user-contact">
           <?php
+            $courses = (sizeof(courses_by_user($user_id)) == 1) ? "<h3>Monitor de: ". string_courses(courses_by_user($user_id)) ."</h3>" : '';
             echo "
-              <h2>". $user['name'] ."</h2>
-              <h3>Monitor de: ". curse_by_user($user_id) ."</h3>
+              <h2>". $user['name'] ." <a href='../pages/edit-user.php?id=". $user['id'] ."' class='glyphicon glyphicon-pencil'></a></h2>
+              ". $courses ."
               <h3>". $user['phone'] ."</h3>
               <h3>". $user['address'] ."</h3>
               <a href=mailto:". $user['email'] .">". $user['email'] ."</a>
             ";
           ?>
         </div>
+      </div>
+
+      <div class="page-header course">
+        <?php 
+          echo (sizeof(courses_by_user($user_id)) > 1) ? "<h3>Monitor nos cursos: ". string_courses(courses_by_user($user_id)) ."</h3>" : '';
+        ?>
       </div>
 
       <?php
@@ -58,9 +69,30 @@
 
         <table class="table table-bordered">
           <tbody>
-            <tr><td>Aula dia <mark>21/5</mark> com inicio ás: <mark>12:05</mark> e termino ás <mark>13:15</mark>.</td></tr>
-            <tr><td>Aula dia <mark>24/5</mark> com inicio ás: <mark>11:05</mark> e termino ás <mark>13:15</mark>.</td></tr>
-            <tr><td>Aula dia <mark>25/5</mark> com inicio ás: <mark>15:05</mark> e termino ás <mark>16:15</mark>.</td></tr>
+            <?php
+              unset($rows);
+              unset($row);
+              $mysqli = connect();
+              $close = $mysqli->query("SELECT * FROM lesson WHERE active='false' AND user_id='". $user['id'] ."' ORDER BY id DESC LIMIT 5");
+              if($close != ''){
+                while($row = $close->fetch_array())
+                {
+                  $rows[] = $row;
+                }
+              }
+              
+              if(isset($rows)){
+                foreach ($rows as $row) {
+
+                  $end = date_format(date_create($row['end']) , 'H:i:s');
+                  $day = date_format(date_create($row['start']), 'd/m/y');
+                  $start = date_format(date_create($row['start']), 'H:i:s') ;
+                  echo "<tr><td>Aula dia <mark>". $day."</mark> com inicio as: <mark>".$start ."</mark> e termino as <mark>". $end ."</mark> com duração de <mark>". lesson_duration_by_id($row['id'])."</mark> minutos.</td></tr>";
+                }
+              }else{
+                echo "<tr><td>Nenhuma aula concluida.</td></tr>";
+              }
+            ?>  
           </tbody>
         </table>
       </div>
@@ -69,79 +101,79 @@
         <div class="page-header">
           <h3>Historico de Pagamentos</h3>
         </div>
-        <div class="panel-group" id="accordion">
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">
-                  Junho
-                </a>
-              </h4>
-            </div>
-            <div id="collapseOne" class="panel-collapse collapse in">
-              <div class="panel-body">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <strong>Dias trabalhados:</strong> 15 Dias
+        <div class="panel-group" id="accordion">         
+          <?php
+            $rows = total_months_worked_by_user($user_id);
+            if ($rows !='')
+            {
+              foreach ($rows as $row) {
+                $days = total_days_worked_by_monts_user($user_id ,$row['MONTH(end)']);
+                $table = "
+                  <div class='panel panel-default'>
+                    <div class='panel-heading'>
+                      <h4 class='panel-title'>
+                        <a data-toggle='collapse' data-parent='#accordion' href='#". $row['MONTH(end)'] ."'>
+                          ". return_month_name($row['MONTH(end)']) ."
+                        </a>
+                      </h4>
                     </div>
+                    <div id='". $row['MONTH(end)'] ."' class='panel-collapse collapse'>
+                      <div class='panel-body'>
+                        <div class='panel-body'>
+                          <div class='row'>
+                            <div class='col-md-6'>
+                              <strong>Dias trabalhados:</strong> <mark>". sizeof($days) ." Dias</mark> 
+                            </div>
 
-                    <div class="col-md-6">
-                      <strong>32</strong> Horas trabalhadas
+                            <div class='col-md-6'>
+                              <strong><mark>". minutes_to_hours(total_time_course_by_user_month($user_id, $row['MONTH(end)'])) ."</strong></mark> trabalhadas
+                            </div>
+                          </div>
+                          <div class='row'>
+                            <div class='col-md-6'>
+                              <strong>Depositado em:</strong> 15/8
+                            </div>
+
+                            <div class='col-md-6'>
+                              <strong>Valor total:</strong> <mark>R$ ". salary_value_by_user_month($user_id, $row['MONTH(end)']) ."</mark>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <strong>Depositado em:</strong> 15/8
+                ";
+                $register_price = "
+                  <div class='panel panel-default'>
+                    <div class='panel-heading'>
+                      <h4 class='panel-title'>
+                        <a data-toggle='collapse' data-parent='#accordion' href='#". $row['MONTH(end)'] ."'>
+                          ". return_month_name($row['MONTH(end)']) ."
+                        </a>
+                      </h4>
                     </div>
-
-                    <div class="col-md-6">
-                      <strong>Valor total:</strong> R$ 250,30
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading">
-              <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">
-                  Julho
-                </a>
-              </h4>
-            </div>
-            <div id="collapseTwo" class="panel-collapse collapse">
-              <div class="panel-body">
-                <div class="panel-body">
-                  <div class="row">
-                    <div class="col-md-6">
-                      <strong>Dias trabalhados:</strong> 29 Dias
-                    </div>
-
-                    <div class="col-md-6">
-                      <strong>42</strong> Horas trabalhadas
+                    <div id='". $row['MONTH(end)'] ."' class='panel-collapse collapse'>
+                      <div class='panel-body'>
+                        <div class='panel-body'>
+                          <h4>Não foi encontrado preço por hora para o mês de <mark>". return_month_name($row['MONTH(end)']) ."</mark></h4>
+                          <a href='../pages/register-price.php'>Clique aqui para cadastrar</a>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div class="row">
-                    <div class="col-md-6">
-                      <strong>Depositado em:</strong> 14/9
-                    </div>
-
-                    <div class="col-md-6">
-                      <strong>Valor total:</strong> R$ 500,30
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+                ";
+                if(value_of_active_price($row['MONTH(end)']) != 0)
+                {
+                  echo $table;
+                }else{
+                  echo $register_price;
+                }
+              }
+            }else{
+              echo "<h3>Nenhum pagamento encontrado.</h3>";
+            }
+          ?>
         </div>
       </div> 
-
-    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <!-- Include all compiled plugins (below), or include individual files as needed -->
-    <script src="../css/bootstrap/js/bootstrap.min.js"></script>
   </body>
 </html>

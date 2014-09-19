@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Aug 31, 2014 at 11:29 AM
+-- Generation Time: Sep 08, 2014 at 07:54 AM
 -- Server version: 5.6.17
 -- PHP Version: 5.5.12
 
@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `course` (
   `id` int(5) NOT NULL AUTO_INCREMENT,
   `user_id` int(5) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=4 ;
 
 --
 -- Dumping data for table `course`
@@ -39,7 +39,8 @@ CREATE TABLE IF NOT EXISTS `course` (
 
 INSERT INTO `course` (`name`, `id`, `user_id`) VALUES
 ('Estrutura de Dados', 1, 1),
-('Logica de ProgramaÃ§Ã£o', 2, 2);
+('Logica de ProgramaÃ§Ã£o', 2, 2),
+('Portugues', 3, 2);
 
 -- --------------------------------------------------------
 
@@ -83,14 +84,31 @@ INSERT INTO `hour` (`week_day`, `start`, `end`, `id`, `schedule_id`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `lesson` (
-  `start` time NOT NULL,
-  `end` time NOT NULL,
-  `user_id` int(5) NOT NULL,
-  `day` date NOT NULL,
-  `price_id` int(5) NOT NULL,
+  `start` datetime NOT NULL,
+  `end` datetime NOT NULL,
   `id` int(5) NOT NULL AUTO_INCREMENT,
+  `active` tinyint(1) NOT NULL,
+  `course_id` int(11) NOT NULL,
+  `open_by` int(11) NOT NULL,
+  `closed_by` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=57 ;
+
+--
+-- Dumping data for table `lesson`
+--
+
+INSERT INTO `lesson` (`start`, `end`, `id`, `active`, `course_id`, `open_by`, `closed_by`, `user_id`) VALUES
+('2014-09-05 15:47:54', '2014-09-05 16:48:13', 47, 0, 2, 1, 1, 1),
+('2014-08-06 15:48:02', '2014-08-06 16:48:21', 48, 0, 1, 1, 1, 1),
+('2014-09-08 01:07:20', '2014-09-08 01:36:03', 51, 0, 1, 1, 1, 1),
+('2014-09-08 01:07:28', '2014-09-08 01:36:05', 52, 0, 2, 1, 1, 2),
+('2014-09-07 15:41:14', '2014-09-07 16:52:28', 46, 0, 1, 1, 1, 1),
+('2014-09-08 02:20:10', '2014-09-08 02:20:13', 53, 0, 2, 1, 1, 2),
+('2014-09-08 02:20:15', '2014-09-08 02:20:21', 54, 0, 2, 1, 1, 2),
+('2014-09-08 02:20:55', '2014-09-08 02:20:56', 55, 0, 1, 1, 1, 1),
+('2014-09-08 02:23:14', '2014-09-08 02:23:16', 56, 0, 1, 1, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -119,12 +137,18 @@ INSERT INTO `login` (`user_id`, `login`, `password`) VALUES
 --
 
 CREATE TABLE IF NOT EXISTS `price` (
-  `value` int(10) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  `month` date NOT NULL,
+  `value` float NOT NULL,
+  `month` datetime NOT NULL,
   `id` int(5) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=1 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_bin AUTO_INCREMENT=3 ;
+
+--
+-- Dumping data for table `price`
+--
+
+INSERT INTO `price` (`value`, `month`, `id`) VALUES
+(7.59, '2014-09-01 00:00:00', 1);
 
 -- --------------------------------------------------------
 
